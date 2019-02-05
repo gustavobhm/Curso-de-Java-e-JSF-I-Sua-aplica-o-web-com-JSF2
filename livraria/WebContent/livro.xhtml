@@ -4,11 +4,13 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
 
+<h:head />
+
 <h:body>
 	<h1>Novo Livro</h1>
 	<h:form>
 
-		<h:messages />
+		<h:messages id="messages" />
 
 		<fieldset>
 
@@ -21,11 +23,14 @@
 					required="true" requiredMessage="Título obrigatório"
 					validatorMessage="Título não pode ser superior a 40">
 					<f:validateLength maximum="40" />
+					<f:ajax event="blur" render="messages" />
 				</h:inputText>
 
 				<h:outputLabel value="ISBN:" for="isbn" />
 				<h:inputText id="isbn" value="#{livroBean.livro.isbn}"
-					validator="#{livroBean.comecaComDigitoUm}" />
+					validator="#{livroBean.comecaComDigitoUm}">
+					<f:ajax event="keyup" render="messages" />
+				</h:inputText>
 
 				<h:outputLabel value="Preço:" for="preco" />
 				<h:inputText id="preco" value="#{livroBean.livro.preco}"
@@ -55,9 +60,12 @@
 			</h:selectOneMenu>
 
 			<h:commandButton value="Gravar Autor"
-				action="#{livroBean.gravarAutor}" />
+				action="#{livroBean.gravarAutor}">
+				<f:ajax execute="autor" render="tabelaAutores" />
+			</h:commandButton>
 
-			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor">
+			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+				id="tabelaAutores">
 				<h:column>
 					<h:outputText value="#{autor.nome}" />
 				</h:column>
@@ -65,7 +73,9 @@
 
 		</fieldset>
 
-		<h:commandButton value="Gravar" action="#{livroBean.gravar}" />
+		<h:commandButton value="Gravar" action="#{livroBean.gravar}">
+			<f:ajax execute="@form" render="@form :tabelaLivros" />
+		</h:commandButton>
 
 	</h:form>
 
