@@ -47,7 +47,7 @@ public class AutorBean {
 
 		this.autor = new Autor();
 
-		return "livro?faces-redirect=true";
+		return "ok";
 	}
 
 	public void carregar(Autor autor) {
